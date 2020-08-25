@@ -136,8 +136,8 @@ def main():
                 change_state(1)
 
         elif state_ == 1:
-            if count_state_time_ > 5 and \
-               distance_position_to_line < 0.1:
+            if count_state_time_ > 5:
+             
                 change_state(0)
 
         count_loop_ = count_loop_ + 1
