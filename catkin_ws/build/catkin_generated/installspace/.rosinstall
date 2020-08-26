@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/kevin/autonav_sim/catkin_ws/install/setup.sh
