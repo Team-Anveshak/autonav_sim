@@ -48,10 +48,17 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
+<<<<<<< HEAD
 CMAKE_SOURCE_DIR = /home/kevin/autonav_sim/catkin_ws/src
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/kevin/autonav_sim/catkin_ws/build
+=======
+CMAKE_SOURCE_DIR = /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src
+
+# The top-level build directory on which CMake was run.
+CMAKE_BINARY_DIR = /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -137,14 +144,24 @@ install/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
+<<<<<<< HEAD
 	cd /home/kevin/autonav_sim/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/kevin/autonav_sim/catkin_ws/build/CMakeFiles /home/kevin/autonav_sim/catkin_ws/build/gtest/CMakeFiles/progress.marks
 	cd /home/kevin/autonav_sim/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 gtest/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/kevin/autonav_sim/catkin_ws/build/CMakeFiles 0
+=======
+	cd /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/CMakeFiles /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/gtest/CMakeFiles/progress.marks
+	cd /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 gtest/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/CMakeFiles 0
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 .PHONY : all
 
 # The main clean target
 clean:
+<<<<<<< HEAD
 	cd /home/kevin/autonav_sim/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 gtest/clean
+=======
+	cd /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 gtest/clean
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 .PHONY : clean
 
 # The main clean target
@@ -154,17 +171,29 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
+<<<<<<< HEAD
 	cd /home/kevin/autonav_sim/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 gtest/preinstall
+=======
+	cd /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 gtest/preinstall
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
+<<<<<<< HEAD
 	cd /home/kevin/autonav_sim/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 gtest/preinstall
+=======
+	cd /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 gtest/preinstall
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
+<<<<<<< HEAD
 	cd /home/kevin/autonav_sim/catkin_ws/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+=======
+	cd /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 .PHONY : depend
 
 # Help Target
@@ -191,6 +220,10 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
+<<<<<<< HEAD
 	cd /home/kevin/autonav_sim/catkin_ws/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+=======
+	cd /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 .PHONY : cmake_check_build_system
 

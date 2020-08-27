@@ -43,10 +43,17 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
+<<<<<<< HEAD
 CMAKE_SOURCE_DIR = /home/kevin/autonav_sim/catkin_ws/src
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/kevin/autonav_sim/catkin_ws/build
+=======
+CMAKE_SOURCE_DIR = /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src
+
+# The top-level build directory on which CMake was run.
+CMAKE_BINARY_DIR = /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 
 # Utility rule file for tests.
 
@@ -67,6 +74,10 @@ CMakeFiles/tests.dir/clean:
 .PHONY : CMakeFiles/tests.dir/clean
 
 CMakeFiles/tests.dir/depend:
+<<<<<<< HEAD
 	cd /home/kevin/autonav_sim/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kevin/autonav_sim/catkin_ws/src /home/kevin/autonav_sim/catkin_ws/src /home/kevin/autonav_sim/catkin_ws/build /home/kevin/autonav_sim/catkin_ws/build /home/kevin/autonav_sim/catkin_ws/build/CMakeFiles/tests.dir/DependInfo.cmake --color=$(COLOR)
+=======
+	cd /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/CMakeFiles/tests.dir/DependInfo.cmake --color=$(COLOR)
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 .PHONY : CMakeFiles/tests.dir/depend
 

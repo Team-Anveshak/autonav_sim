@@ -2,7 +2,11 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
+<<<<<<< HEAD
   set(CMAKE_INSTALL_PREFIX "/home/kevin/autonav_sim/catkin_ws/install")
+=======
+  set(CMAKE_INSTALL_PREFIX "/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/install")
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -39,7 +43,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
+<<<<<<< HEAD
   include("/home/kevin/autonav_sim/catkin_ws/build/gtest/googlemock/cmake_install.cmake")
+=======
+  include("/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/gtest/googlemock/cmake_install.cmake")
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 
 endif()
 

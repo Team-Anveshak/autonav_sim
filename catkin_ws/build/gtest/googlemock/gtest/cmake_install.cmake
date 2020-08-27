@@ -2,7 +2,11 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
+<<<<<<< HEAD
   set(CMAKE_INSTALL_PREFIX "/home/kevin/autonav_sim/catkin_ws/install")
+=======
+  set(CMAKE_INSTALL_PREFIX "/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/install")
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

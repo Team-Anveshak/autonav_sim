@@ -10,6 +10,8 @@ from tf import transformations
 from gazebo_msgs.msg import ModelState
 from gazebo_msgs.srv import SetModelState
 from std_srvs.srv import *
+import numpy as np
+import csv
 
 import math
 
@@ -57,6 +59,11 @@ def clbk_laser(msg):
 		'left':   min(min(msg.ranges[576:719]), 10),
 	}
 
+def clbk_update_desired_position(msg):
+    global desired_position_, initial_position_
+    initial_position_ = desired_position_
+    desired_position_ = msg
+
 def change_state(state):
 	global state_, state_desc_
 	global srv_client_wall_follower_, srv_client_go_to_point_, srv_client_keyboard_
@@ -98,6 +105,7 @@ def normalize_angle(angle):
 	return angle
 
 def main():
+<<<<<<< HEAD
 	global regions_, position_, desired_position_, state_, yaw_, yaw_error_allowed_
 	global srv_client_go_to_point_, srv_client_wall_follower_,srv_client_keyboard_
 	global count_state_time_, count_loop_
@@ -148,6 +156,69 @@ def main():
         
 		rospy.loginfo("distance to line: [%.2f], position: [%.2f, %.2f]", distance_to_line(position_), position_.x, position_.y)
 		rate.sleep()
+=======
+    global regions_, position_, desired_position_, state_, yaw_, yaw_error_allowed_
+    global srv_client_go_to_point_, srv_client_wall_follower_
+    global count_state_time_, count_loop_
+    
+    #read data rom file
+    data = np.genfromtxt("positionData.csv", delimiter=',')
+    initial_position_.x = data[0][0]
+    initial_position_.y = data[0][1]
+    initial_position_.z = data[0][2]
+    desired_position_.x = data[1][0]
+    desired_position_.y = data[1][1]
+    desired_position_.z = data[1][2]
+
+    rospy.init_node('bug2')
+
+    sub_laser = rospy.Subscriber('/camera/scan', LaserScan, clbk_laser)
+    sub_odom = rospy.Subscriber('/odom', Odometry, clbk_odom)
+    sub_imu = rospy.Subscriber('/imu', Imu, clk_yaw)
+    sub_next_position = rospy.Subscriber('/next_desired_position', Point, clbk_update_desired_position)
+
+    rospy.wait_for_service('/go_to_point_switch')
+    rospy.wait_for_service('/wall_follower_switch')
+    rospy.wait_for_service('/gazebo/set_model_state')
+
+    srv_client_go_to_point_ = rospy.ServiceProxy('/go_to_point_switch', SetBool)
+    srv_client_wall_follower_ = rospy.ServiceProxy('/wall_follower_switch', SetBool)
+    srv_client_set_model_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+
+    # set robot position
+    model_state = ModelState()
+    model_state.model_name = 'i214'
+    model_state.pose.position.x = initial_position_.x
+    model_state.pose.position.y = initial_position_.y
+    resp = srv_client_set_model_state(model_state)
+
+    # initialize going to the point
+    change_state(0)
+
+    rate = rospy.Rate(10)
+    while not rospy.is_shutdown():
+        if regions_ == None:
+            continue
+
+        distance_position_to_line = distance_to_line(position_)
+
+        if state_ == 0:
+            if regions_['front'] > 0.15 and regions_['front'] < 1:
+                change_state(1)
+
+        elif state_ == 1:
+            if count_state_time_ > 5:
+             
+                change_state(0)
+
+        count_loop_ = count_loop_ + 1
+        if count_loop_ == 20:
+            count_state_time_ = count_state_time_ + 1
+            count_loop_ = 0
+
+        rospy.loginfo("distance to line: [%.2f], position: [%.2f, %.2f]", distance_to_line(position_), position_.x, position_.y)
+        rate.sleep()
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 
 if __name__ == "__main__":
 	main()

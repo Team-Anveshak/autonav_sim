@@ -48,10 +48,17 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
+<<<<<<< HEAD
 CMAKE_SOURCE_DIR = /home/kevin/autonav_sim/catkin_ws/src
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/kevin/autonav_sim/catkin_ws/build
+=======
+CMAKE_SOURCE_DIR = /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src
+
+# The top-level build directory on which CMake was run.
+CMAKE_BINARY_DIR = /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -137,9 +144,15 @@ test/fast: test
 
 # The main all target
 all: cmake_check_build_system
+<<<<<<< HEAD
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/kevin/autonav_sim/catkin_ws/build/CMakeFiles /home/kevin/autonav_sim/catkin_ws/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/kevin/autonav_sim/catkin_ws/build/CMakeFiles 0
+=======
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/CMakeFiles /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/CMakeFiles/progress.marks
+	$(MAKE) -f CMakeFiles/Makefile2 all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/CMakeFiles 0
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 .PHONY : all
 
 # The main clean target

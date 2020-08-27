@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+<<<<<<< HEAD
 import argparse
+=======
+
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 import os
 import stat
 import sys
@@ -12,18 +16,30 @@ try:
     from catkin.environment_cache import generate_environment_script
 except ImportError:
     # search for catkin package in all workspaces and prepend to path
+<<<<<<< HEAD
     for workspace in "/home/kevin/catkin_ws/devel;/opt/ros/melodic".split(';'):
+=======
+    for workspace in '/home/akshat/catkin_ws/devel;/opt/ros/melodic'.split(';'):
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
         python_path = os.path.join(workspace, 'lib/python2.7/dist-packages')
         if os.path.isdir(os.path.join(python_path, 'catkin')):
             sys.path.insert(0, python_path)
             break
     from catkin.environment_cache import generate_environment_script
 
+<<<<<<< HEAD
 code = generate_environment_script('/home/kevin/autonav_sim/catkin_ws/devel/env.sh')
 
 output_filename = '/home/kevin/autonav_sim/catkin_ws/build/catkin_generated/setup_cached.sh'
 with open(output_filename, 'w') as f:
     #print('Generate script for cached setup "%s"' % output_filename)
+=======
+code = generate_environment_script('/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/devel/env.sh')
+
+output_filename = '/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/catkin_generated/setup_cached.sh'
+with open(output_filename, 'w') as f:
+    # print('Generate script for cached setup "%s"' % output_filename)
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
     f.write('\n'.join(code))
 
 mode = os.stat(output_filename).st_mode

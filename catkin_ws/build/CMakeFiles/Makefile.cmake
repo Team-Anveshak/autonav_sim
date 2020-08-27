@@ -17,9 +17,15 @@ set(CMAKE_MAKEFILE_DEPENDS
   "catkin_generated/order_packages.cmake"
   "motion_plan/catkin_generated/ordered_paths.cmake"
   "motion_plan/catkin_generated/package.cmake"
+<<<<<<< HEAD
   "/home/kevin/autonav_sim/catkin_ws/src/CMakeLists.txt"
   "/home/kevin/autonav_sim/catkin_ws/src/motion_plan/CMakeLists.txt"
   "/home/kevin/autonav_sim/catkin_ws/src/motion_plan/package.xml"
+=======
+  "/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src/CMakeLists.txt"
+  "/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src/motion_plan/CMakeLists.txt"
+  "/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src/motion_plan/package.xml"
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
   "/opt/ros/melodic/share/catkin/cmake/../package.xml"
   "/opt/ros/melodic/share/catkin/cmake/all.cmake"
   "/opt/ros/melodic/share/catkin/cmake/assert.cmake"

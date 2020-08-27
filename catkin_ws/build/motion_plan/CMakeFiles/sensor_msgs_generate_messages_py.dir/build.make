@@ -43,10 +43,17 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
+<<<<<<< HEAD
 CMAKE_SOURCE_DIR = /home/kevin/autonav_sim/catkin_ws/src
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/kevin/autonav_sim/catkin_ws/build
+=======
+CMAKE_SOURCE_DIR = /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src
+
+# The top-level build directory on which CMake was run.
+CMAKE_BINARY_DIR = /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 
 # Utility rule file for sensor_msgs_generate_messages_py.
 
@@ -63,10 +70,18 @@ motion_plan/CMakeFiles/sensor_msgs_generate_messages_py.dir/build: sensor_msgs_g
 .PHONY : motion_plan/CMakeFiles/sensor_msgs_generate_messages_py.dir/build
 
 motion_plan/CMakeFiles/sensor_msgs_generate_messages_py.dir/clean:
+<<<<<<< HEAD
 	cd /home/kevin/autonav_sim/catkin_ws/build/motion_plan && $(CMAKE_COMMAND) -P CMakeFiles/sensor_msgs_generate_messages_py.dir/cmake_clean.cmake
 .PHONY : motion_plan/CMakeFiles/sensor_msgs_generate_messages_py.dir/clean
 
 motion_plan/CMakeFiles/sensor_msgs_generate_messages_py.dir/depend:
 	cd /home/kevin/autonav_sim/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kevin/autonav_sim/catkin_ws/src /home/kevin/autonav_sim/catkin_ws/src/motion_plan /home/kevin/autonav_sim/catkin_ws/build /home/kevin/autonav_sim/catkin_ws/build/motion_plan /home/kevin/autonav_sim/catkin_ws/build/motion_plan/CMakeFiles/sensor_msgs_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
+=======
+	cd /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/motion_plan && $(CMAKE_COMMAND) -P CMakeFiles/sensor_msgs_generate_messages_py.dir/cmake_clean.cmake
+.PHONY : motion_plan/CMakeFiles/sensor_msgs_generate_messages_py.dir/clean
+
+motion_plan/CMakeFiles/sensor_msgs_generate_messages_py.dir/depend:
+	cd /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src/motion_plan /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/motion_plan /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/motion_plan/CMakeFiles/sensor_msgs_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 .PHONY : motion_plan/CMakeFiles/sensor_msgs_generate_messages_py.dir/depend
 

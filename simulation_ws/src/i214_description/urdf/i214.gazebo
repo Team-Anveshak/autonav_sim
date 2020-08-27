@@ -84,7 +84,7 @@
     <sensor name="camera_link_camera" type="depth">
       <update_rate>20</update_rate>
       <camera>
-        <horizontal_fov>1.047198</horizontal_fov>
+        <horizontal_fov>3.10</horizontal_fov>
         <image>
           <width>640</width>
           <height>480</height>
@@ -98,14 +98,14 @@
       <plugin name="camera_link_controller" filename="libgazebo_ros_openni_kinect.so">
         <baseline>0.2</baseline>
         <alwaysOn>true</alwaysOn>
-        <updateRate>1.0</updateRate>
+        <updateRate>20</updateRate>
         <cameraName>camera_ir</cameraName>
         <imageTopicName>/camera/rgb/image_raw</imageTopicName>
         <cameraInfoTopicName>/camera/rgb/camera_info</cameraInfoTopicName>
         <depthImageTopicName>/camera/depth_registered/image_raw</depthImageTopicName>
         <depthImageInfoTopicName>/camera/depth_registered/camera_info</depthImageInfoTopicName>
         <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
-        <frameName>camera_link</frameName>
+        <frameName>camera_link_optical</frameName>
         <pointCloudCutoff>0.5</pointCloudCutoff>
         <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
         <distortionK1>0.00000001</distortionK1>
@@ -121,5 +121,18 @@
       </plugin>
     </sensor>
   </gazebo>
+  <gazebo>
+    <plugin name="novatel_gps_sim" filename="libhector_gazebo_ros_gps.so">
+      <alwaysOn>1</alwaysOn>
+      <updateRate>10.0</updateRate>
+      <bodyName>link_chassis</bodyName>
+      <topicName>fix</topicName>
+      <velocityTopicName>fix_velocity</velocityTopicName>
+      <drift>5.0 5.0 5.0</drift>
+      <gaussianNoise>0.1 0.1 0.1</gaussianNoise>
+      <velocityDrift>0 0 0</velocityDrift>
+      <velocityGaussianNoise>0.1 0.1 0.1</velocityGaussianNoise>
+    </plugin>
+   </gazebo>
 
 </robot>

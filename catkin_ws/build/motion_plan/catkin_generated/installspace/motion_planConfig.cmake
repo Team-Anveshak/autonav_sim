@@ -67,14 +67,23 @@ set(motion_plan_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
+<<<<<<< HEAD
   set(motion_plan_SOURCE_PREFIX /home/kevin/autonav_sim/catkin_ws/src/motion_plan)
   set(motion_plan_DEVEL_PREFIX /home/kevin/autonav_sim/catkin_ws/devel)
+=======
+  set(motion_plan_SOURCE_PREFIX /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src/motion_plan)
+  set(motion_plan_DEVEL_PREFIX /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/devel)
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
   set(motion_plan_INSTALL_PREFIX "")
   set(motion_plan_PREFIX ${motion_plan_DEVEL_PREFIX})
 else()
   set(motion_plan_SOURCE_PREFIX "")
   set(motion_plan_DEVEL_PREFIX "")
+<<<<<<< HEAD
   set(motion_plan_INSTALL_PREFIX /home/kevin/autonav_sim/catkin_ws/install)
+=======
+  set(motion_plan_INSTALL_PREFIX /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/install)
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
   set(motion_plan_PREFIX ${motion_plan_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +163,11 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
+<<<<<<< HEAD
     foreach(path /home/kevin/autonav_sim/catkin_ws/install/lib;/home/kevin/catkin_ws/devel/lib;/opt/ros/melodic/lib)
+=======
+    foreach(path /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/install/lib;/home/akshat/catkin_ws/devel/lib;/opt/ros/melodic/lib)
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

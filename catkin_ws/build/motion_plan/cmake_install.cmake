@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 # Install script for directory: /home/kevin/autonav_sim/catkin_ws/src/motion_plan
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
   set(CMAKE_INSTALL_PREFIX "/home/kevin/autonav_sim/catkin_ws/install")
+=======
+# Install script for directory: /home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src/motion_plan
+
+# Set the install prefix
+if(NOT DEFINED CMAKE_INSTALL_PREFIX)
+  set(CMAKE_INSTALL_PREFIX "/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/install")
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +46,30 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+<<<<<<< HEAD
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/kevin/autonav_sim/catkin_ws/build/motion_plan/catkin_generated/installspace/motion_plan.pc")
+=======
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/motion_plan/catkin_generated/installspace/motion_plan.pc")
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/motion_plan/cmake" TYPE FILE FILES
+<<<<<<< HEAD
     "/home/kevin/autonav_sim/catkin_ws/build/motion_plan/catkin_generated/installspace/motion_planConfig.cmake"
     "/home/kevin/autonav_sim/catkin_ws/build/motion_plan/catkin_generated/installspace/motion_planConfig-version.cmake"
+=======
+    "/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/motion_plan/catkin_generated/installspace/motion_planConfig.cmake"
+    "/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/build/motion_plan/catkin_generated/installspace/motion_planConfig-version.cmake"
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+<<<<<<< HEAD
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/motion_plan" TYPE FILE FILES "/home/kevin/autonav_sim/catkin_ws/src/motion_plan/package.xml")
+=======
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/motion_plan" TYPE FILE FILES "/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/src/motion_plan/package.xml")
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 endif()
 

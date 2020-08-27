@@ -116,7 +116,7 @@ def main():
 
     pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
 
-    sub = rospy.Subscriber('/i214/laser/scan', LaserScan, clbk_laser)
+    sub = rospy.Subscriber('/camera/scan', LaserScan, clbk_laser)
 
     srv = rospy.Service('wall_follower_switch', SetBool, wall_follower_switch)
 

@@ -1,5 +1,9 @@
 set(_CATKIN_CURRENT_PACKAGE "catkin")
+<<<<<<< HEAD
 set(catkin_VERSION "0.7.20")
+=======
+set(catkin_VERSION "0.7.26")
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 set(catkin_MAINTAINER "Dirk Thomas <dthomas@osrfoundation.org>")
 set(catkin_PACKAGE_FORMAT "3")
 set(catkin_BUILD_DEPENDS "python-argparse" "python-catkin-pkg" "python3-catkin-pkg" "python-empy" "python3-empy")
@@ -8,8 +12,13 @@ set(catkin_BUILD_DEPENDS_python3-catkin-pkg_VERSION_GT "0.4.3")
 set(catkin_BUILD_EXPORT_DEPENDS "google-mock" "gtest" "python-nose" "python3-nose" "python-argparse" "python-catkin-pkg" "python3-catkin-pkg" "python-empy" "python3-empy")
 set(catkin_BUILD_EXPORT_DEPENDS_python-catkin-pkg_VERSION_GT "0.4.3")
 set(catkin_BUILD_EXPORT_DEPENDS_python3-catkin-pkg_VERSION_GT "0.4.3")
+<<<<<<< HEAD
 set(catkin_BUILDTOOL_DEPENDS "cmake")
 set(catkin_BUILDTOOL_EXPORT_DEPENDS "cmake")
+=======
+set(catkin_BUILDTOOL_DEPENDS "cmake" "python-setuptools" "python3-setuptools")
+set(catkin_BUILDTOOL_EXPORT_DEPENDS "cmake" "python3-setuptools")
+>>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
 set(catkin_EXEC_DEPENDS "python-argparse" "python-catkin-pkg" "python3-catkin-pkg" "python-empy" "python3-empy")
 set(catkin_EXEC_DEPENDS_python-catkin-pkg_VERSION_GT "0.4.3")
 set(catkin_EXEC_DEPENDS_python3-catkin-pkg_VERSION_GT "0.4.3")
