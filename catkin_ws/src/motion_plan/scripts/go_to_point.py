@@ -35,7 +35,6 @@ dist_precision_ = 0.3
 
 # publishers
 pub = None
-pub_next_position = None
 
 #PID control paramters (integral term is not added yet)
 P = -2	    # Proportional
@@ -143,7 +142,6 @@ def main():
     rospy.init_node('go_to_point')
 
     pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
-    pub_next_position = rospy.Publisher('/next_desired_position', Point, queue_size=2)
 
     sub_odom = rospy.Subscriber('/odom', Odometry, clbk_odom)
 
@@ -169,7 +167,6 @@ def main():
                     desired_position_.y = position_data[current_goal][1]
                     desired_position_.z = position_data[current_goal][2]
                     change_state(0)
-                    pub_next_position.publish(desired_position_)
                 elif current_goal == len(position_data) - 1:
                     print 'Final Goal Reached'
                     current_goal += 1  
