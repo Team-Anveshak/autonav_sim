@@ -15,6 +15,9 @@ import csv
 
 active_ = False
 
+current_goal = 1
+position_data = None
+
 # robot state variables
 position_ = Point()
 yaw_ = 100
@@ -72,7 +75,9 @@ def clk_yaw(msg):
     #rospy.loginfo(state_v[2])
 
 def change_state(state):
-    global state_
+    global state_, prev_err_yaw
+    # so the derivative of the previous iteration isn't included
+    prev_err_yaw = 0
     state_ = state
     print 'State changed to [%s]' % state_
 
@@ -124,6 +129,23 @@ def go_straight_ahead(des_pos):
         print 'Yaw error: [%s]' % err_yaw
   #     change_state(0)   Removed temporarily because it was causing problems (the rover stops abruptly in the middle in presence of an obstacle)
 
+def set_next_goal():
+    global current_goal, desired_position_, position_data
+
+    #Check if there are any more goals left
+    if current_goal < len(position_data) - 1:
+        print 'Goal [%s] reached' % current_goal
+        current_goal += 1
+        desired_position_.x = position_data[current_goal][0]
+        desired_position_.y = position_data[current_goal][1]
+        desired_position_.z = position_data[current_goal][2]
+        change_state(0)
+    elif current_goal == len(position_data) - 1:
+        print 'Final Goal Reached'
+        current_goal += 1  
+    else:
+        done()
+
 def done():
     twist_msg = Twist()
     twist_msg.linear.x = 0
@@ -131,7 +153,7 @@ def done():
     pub.publish(twist_msg)
 
 def main():
-    global pub, active_
+    global pub, active_, position_data
   
     #read position_data rom file
     position_data = np.genfromtxt("positionData.csv", delimiter=',')
@@ -159,19 +181,7 @@ def main():
             elif state_ == 1:
                 go_straight_ahead(desired_position_)
             elif state_ == 2:
-                #Check if there are any more goals left
-                if current_goal < len(position_data) - 1:
-                    print 'Goal [%s] reached' % current_goal
-                    current_goal += 1
-                    desired_position_.x = position_data[current_goal][0]
-                    desired_position_.y = position_data[current_goal][1]
-                    desired_position_.z = position_data[current_goal][2]
-                    change_state(0)
-                elif current_goal == len(position_data) - 1:
-                    print 'Final Goal Reached'
-                    current_goal += 1  
-                else:
-                    done()
+                set_next_goal()
             else:
                 rospy.logerr('Unknown state!')
 
