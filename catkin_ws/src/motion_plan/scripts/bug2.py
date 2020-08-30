@@ -10,8 +10,6 @@ from tf import transformations
 from gazebo_msgs.msg import ModelState
 from gazebo_msgs.srv import SetModelState
 from std_srvs.srv import *
-import numpy as np
-import csv
 
 import math
 
@@ -58,11 +56,6 @@ def clbk_laser(msg):
 		'fleft':  min(min(msg.ranges[432:575]), 10),
 		'left':   min(min(msg.ranges[576:719]), 10),
 	}
-
-def clbk_update_desired_position(msg):
-    global desired_position_, initial_position_
-    initial_position_ = desired_position_
-    desired_position_ = msg
 
 def change_state(state):
 	global state_, state_desc_
@@ -160,22 +153,12 @@ def main():
     global regions_, position_, desired_position_, state_, yaw_, yaw_error_allowed_
     global srv_client_go_to_point_, srv_client_wall_follower_
     global count_state_time_, count_loop_
-    
-    #read data rom file
-    data = np.genfromtxt("positionData.csv", delimiter=',')
-    initial_position_.x = data[0][0]
-    initial_position_.y = data[0][1]
-    initial_position_.z = data[0][2]
-    desired_position_.x = data[1][0]
-    desired_position_.y = data[1][1]
-    desired_position_.z = data[1][2]
 
     rospy.init_node('bug2')
 
     sub_laser = rospy.Subscriber('/camera/scan', LaserScan, clbk_laser)
     sub_odom = rospy.Subscriber('/odom', Odometry, clbk_odom)
     sub_imu = rospy.Subscriber('/imu', Imu, clk_yaw)
-    sub_next_position = rospy.Subscriber('/next_desired_position', Point, clbk_update_desired_position)
 
     rospy.wait_for_service('/go_to_point_switch')
     rospy.wait_for_service('/wall_follower_switch')
