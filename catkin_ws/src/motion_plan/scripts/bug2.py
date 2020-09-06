@@ -78,20 +78,6 @@ def change_state(state):
 		resp=srv_client_go_to_point_(False)
 		resp=srv_client_wall_follower_(False)
 		resp=srv_client_keyboard_(True)
-        
-        
-def distance_to_line(p0):
-	# p0 is the current position
-	# p1 and p2 points define the line
-	global initial_position_, desired_position_
-	p1 = initial_position_
-	p2 = desired_position_
-   
-	up_eq = math.fabs((p2.y - p1.y) * p0.x - (p2.x - p1.x) * p0.y + (p2.x * p1.y) - (p2.y * p1.x))
-	lo_eq = math.sqrt(pow(p2.y - p1.y, 2) + pow(p2.x - p1.x, 2))
-	distance = up_eq / lo_eq
-	return distance
-
 
 def normalize_angle(angle):
 	if(math.fabs(angle) > math.pi):
@@ -142,7 +128,6 @@ def main():
 		switch=sys.stdin.readline().strip()
 	if regions_ == None:
 		continue
-	distance_position_to_line = distance_to_line(position_)
 	if switch=='1' and not state_==2:
 		change_state(2)
 	elif switch=='0' and state_==2:
@@ -151,7 +136,7 @@ def main():
 		if regions_['front'] > 0.15 and regions_['front'] < 1:
 			change_state(1)
 	elif state_ == 1:
-		if count_state_time_ > 5 and distance_position_to_line < 0.1:
+		if count_state_time_ > 5:
 			change_state(0)
 				   
 	count_loop_ = count_loop_ + 1
@@ -159,7 +144,7 @@ def main():
 		count_state_time_ = count_state_time_ + 1
 		count_loop_ = 0
         
-	rospy.loginfo("distance to line: [%.2f], position: [%.2f, %.2f]", distance_to_line(position_), position_.x, position_.y)
+	rospy.loginfo("position: [%.2f, %.2f]", position_.x, position_.y)
 	rate.sleep()
 
 if __name__ == "__main__":
