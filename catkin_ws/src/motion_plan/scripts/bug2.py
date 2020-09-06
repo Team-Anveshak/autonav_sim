@@ -24,9 +24,9 @@ initial_position_.x = -10
 initial_position_.y = -10
 initial_position_.z = 0
 desired_position_ = Point()
-desired_position_.x = 10
-desired_position_.y = 10
-desired_position_.z = 0
+#desired_position_.x = 10
+#desired_position_.y = 10
+#desired_position_.z = 0
 regions_ = None
 state_desc_ = ['Go to point', 'wall following', 'Keyboard input']
 state_ = 0
@@ -56,6 +56,7 @@ def clbk_laser(msg):
 		'fleft':  min(min(msg.ranges[432:575]), 10),
 		'left':   min(min(msg.ranges[576:719]), 10),
 	}
+
 
 def change_state(state):
 	global state_, state_desc_
@@ -98,61 +99,12 @@ def normalize_angle(angle):
 	return angle
 
 def main():
-<<<<<<< HEAD
-	global regions_, position_, desired_position_, state_, yaw_, yaw_error_allowed_
-	global srv_client_go_to_point_, srv_client_wall_follower_,srv_client_keyboard_
-	global count_state_time_, count_loop_
-	rospy.init_node('bug2')
 
-	sub_laser = rospy.Subscriber('/camera/scan', LaserScan, clbk_laser)
-	sub_odom = rospy.Subscriber('/odom', Odometry, clbk_odom)
-	sub_imu = rospy.Subscriber('/imu', Imu, clk_yaw)
-	rospy.wait_for_service('/go_to_point_switch')
-	rospy.wait_for_service('/wall_follower_switch')
-	rospy.wait_for_service('/gazebo/set_model_state')
-	srv_client_go_to_point_ = rospy.ServiceProxy('/go_to_point_switch', SetBool)
-	srv_client_wall_follower_ = rospy.ServiceProxy('/wall_follower_switch', SetBool)
-	srv_client_keyboard_=rospy.ServiceProxy('/keyboard_switch',SetBool)
-	srv_client_set_model_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
-	# set robot position
-	model_state = ModelState()
-	model_state.model_name = 'i214'
-	model_state.pose.position.x = initial_position_.x
-	model_state.pose.position.y = initial_position_.y
-	resp = srv_client_set_model_state(model_state)
-	# initialize going to the point
-	change_state(0)	
-	rate = rospy.Rate(10)
-	switch='0'
-	while not rospy.is_shutdown():
-		i,o,e=select.select([sys.stdin],[],[],1)
-		if(i):
-			switch=sys.stdin.readline().strip()
-		if regions_ == None:
-			continue
-		distance_position_to_line = distance_to_line(position_)
-		if switch=='1' and not state_==2:
-			change_state(2)
-		elif switch=='0' and state_==2:
-			change_state(0)
-		if state_ == 0:
-			if regions_['front'] > 0.15 and regions_['front'] < 1:
-				change_state(1)
-		elif state_ == 1:
-			if count_state_time_ > 5 and distance_position_to_line < 0.1:
-				change_state(0)
-				   
-		count_loop_ = count_loop_ + 1
-		if count_loop_ == 20:
-			count_state_time_ = count_state_time_ + 1
-			count_loop_ = 0
-        
-		rospy.loginfo("distance to line: [%.2f], position: [%.2f, %.2f]", distance_to_line(position_), position_.x, position_.y)
-		rate.sleep()
-=======
     global regions_, position_, desired_position_, state_, yaw_, yaw_error_allowed_
-    global srv_client_go_to_point_, srv_client_wall_follower_
+    global srv_client_go_to_point_, srv_client_wall_follower_,srv_client_keyboard_
     global count_state_time_, count_loop_
+    
+
 
     rospy.init_node('bug2')
 
@@ -166,7 +118,9 @@ def main():
 
     srv_client_go_to_point_ = rospy.ServiceProxy('/go_to_point_switch', SetBool)
     srv_client_wall_follower_ = rospy.ServiceProxy('/wall_follower_switch', SetBool)
+    srv_client_keyboard_=rospy.ServiceProxy('/keyboard_switch',SetBool)
     srv_client_set_model_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+    
 
     # set robot position
     model_state = ModelState()
@@ -179,29 +133,34 @@ def main():
     change_state(0)
 
     rate = rospy.Rate(10)
+    switch='0'
     while not rospy.is_shutdown():
-        if regions_ == None:
-            continue
-
-        distance_position_to_line = distance_to_line(position_)
-
-        if state_ == 0:
-            if regions_['front'] > 0.15 and regions_['front'] < 1:
-                change_state(1)
-
-        elif state_ == 1:
-            if count_state_time_ > 5:
-             
-                change_state(0)
-
-        count_loop_ = count_loop_ + 1
-        if count_loop_ == 20:
-            count_state_time_ = count_state_time_ + 1
-            count_loop_ = 0
-
-        rospy.loginfo("distance to line: [%.2f], position: [%.2f, %.2f]", distance_to_line(position_), position_.x, position_.y)
-        rate.sleep()
->>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
+    	
+    
+	i,o,e=select.select([sys.stdin],[],[],1)
+	if(i):
+		switch=sys.stdin.readline().strip()
+	if regions_ == None:
+		continue
+	distance_position_to_line = distance_to_line(position_)
+	if switch=='1' and not state_==2:
+		change_state(2)
+	elif switch=='0' and state_==2:
+		change_state(0)
+	if state_ == 0:
+		if regions_['front'] > 0.15 and regions_['front'] < 1:
+			change_state(1)
+	elif state_ == 1:
+		if count_state_time_ > 5 and distance_position_to_line < 0.1:
+			change_state(0)
+				   
+	count_loop_ = count_loop_ + 1
+	if count_loop_ == 20:
+		count_state_time_ = count_state_time_ + 1
+		count_loop_ = 0
+        
+	rospy.loginfo("distance to line: [%.2f], position: [%.2f, %.2f]", distance_to_line(position_), position_.x, position_.y)
+	rate.sleep()
 
 if __name__ == "__main__":
 	main()
