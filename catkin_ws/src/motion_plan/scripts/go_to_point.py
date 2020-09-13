@@ -5,7 +5,7 @@ import rospy
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist, Point
 from nav_msgs.msg import Odometry
-from sensor_msgs.msg import Imu
+from sensor_msgs.msg import Imu, NavSatFix
 from tf import transformations
 from std_srvs.srv import *
 
@@ -13,25 +13,26 @@ import math
 import numpy as np
 import csv
 
+class gpsData:
+    latitude = 0.0
+    longitude = 0.0
+
 active_ = False
 
 current_goal = 1
 position_data = None
 
 # robot state variables
-position_ = Point()
+position_ = gpsData()
 yaw_ = 100
 
 # machine state
 state_ = 1
 # goal
-desired_position_ = Point()
-desired_position_.x = 10
-desired_position_.y = 10
-desired_position_.z = 0
+desired_position_ = gpsData()
 # parameters
 yaw_precision_ = math.pi*2 / 180 # +/- 10 degree allowed
-dist_precision_ = 0.3
+dist_precision_ = 0.00014
 
 
 
@@ -56,12 +57,11 @@ def go_to_point_switch(req):
     return res
 
 # callbacks
-def clbk_odom(msg):
+def clbk_gps(msg):
     global position_
-    global yaw_
 
-    # position
-    position_ = msg.pose.pose.position
+    position_.latitude = msg.latitude
+    position_.longitude = msg.longitude
 
 def clk_yaw(msg):
     global yaw_
@@ -81,6 +81,31 @@ def change_state(state):
     state_ = state
     print 'State changed to [%s]' % state_
 
+def yawFromGps(lat1, long1, lat2, long2):
+    lat1,long1,lat2,long2 = map(np.radians, [lat1,long1,lat2,long2])
+
+    dLon = (long2 - long1)
+
+    y = math.sin(dLon) * math.cos(lat2)
+    x = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(dLon)
+
+    brng = math.atan2(y, x)
+    brng = (brng + 2*math.pi) % math.pi
+    brng = math.pi - brng
+
+    return brng
+
+def distanceFromGps(lat1,lon1,lat2,lon2):
+    R = 6371.0088
+    lat1,lon1,lat2,lon2 = map(np.radians, [lat1,lon1,lat2,lon2])
+
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    a = np.sin(dlat/2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon/2) **2
+    c = 2 * np.arctan2(a**0.5, (1-a)**0.5)
+    d = R * c
+    return d
+
 def normalize_angle(angle):
     if(math.fabs(angle) > math.pi):
         angle = angle - (2 * math.pi * angle) / (math.fabs(angle))
@@ -88,7 +113,7 @@ def normalize_angle(angle):
 
 def fix_yaw(des_pos):
     global yaw_, pub, yaw_precision_, state_
-    desired_yaw = math.atan2(des_pos.y - position_.y, des_pos.x - position_.x)
+    desired_yaw = yawFromGps(position_.latitude, position_.longitude, des_pos.latitude, des_pos.longitude)
     err_yaw = normalize_angle(desired_yaw - yaw_)
 
     rospy.loginfo(err_yaw)
@@ -107,10 +132,10 @@ def fix_yaw(des_pos):
         change_state(1)
 
 def go_straight_ahead(des_pos):
-    global yaw_, pub, yaw_precision_, state_, prev_err_yaw
-    desired_yaw = math.atan2(des_pos.y - position_.y, des_pos.x - position_.x)
+    global yaw_, pub, yaw_precision_, state_, prev_err_yaw, position_
+    desired_yaw = yawFromGps(position_.latitude, position_.longitude, des_pos.latitude, des_pos.longitude)
     err_yaw = desired_yaw - yaw_
-    err_pos = math.sqrt(pow(des_pos.y - position_.y, 2) + pow(des_pos.x - position_.x, 2))
+    err_pos = distanceFromGps(position_.latitude, position_.longitude, des_pos.latitude, des_pos.longitude)
 
     if err_pos > dist_precision_:
         twist_msg = Twist()
@@ -127,6 +152,7 @@ def go_straight_ahead(des_pos):
     # state change conditions
     if math.fabs(err_yaw) > yaw_precision_:
         print 'Yaw error: [%s]' % err_yaw
+        print 'Yaw: [%s]' % desired_yaw
   #     change_state(0)   Removed temporarily because it was causing problems (the rover stops abruptly in the middle in presence of an obstacle)
 
 def set_next_goal():
@@ -136,9 +162,8 @@ def set_next_goal():
     if current_goal < len(position_data) - 1:
         print 'Goal [%s] reached' % current_goal
         current_goal += 1
-        desired_position_.x = position_data[current_goal][0]
-        desired_position_.y = position_data[current_goal][1]
-        desired_position_.z = position_data[current_goal][2]
+        desired_position_.latitude = position_data[current_goal][0]
+        desired_position_.longitude = position_data[current_goal][1]
         change_state(0)
     elif current_goal == len(position_data) - 1:
         print 'Final Goal Reached'
@@ -153,19 +178,18 @@ def done():
     pub.publish(twist_msg)
 
 def main():
-    global pub, active_, position_data
+    global pub, active_, position_data, desired_position_
   
     #read position_data rom file
     position_data = np.genfromtxt("positionData.csv", delimiter=',')
-    desired_position_.x = position_data[1][0]
-    desired_position_.y = position_data[1][1]
-    desired_position_.z = position_data[1][2]
+    desired_position_.latitude = position_data[1][0]
+    desired_position_.longitude = position_data[1][1]
 
     rospy.init_node('go_to_point')
 
     pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
 
-    sub_odom = rospy.Subscriber('/odom', Odometry, clbk_odom)
+    sub_gps = rospy.Subscriber('/fix', NavSatFix, clbk_gps)
 
     sub_imu = rospy.Subscriber('/imu', Imu, clk_yaw)
 
