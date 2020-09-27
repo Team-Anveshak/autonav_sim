@@ -1,6 +1,0 @@
-motion_plan
-<<<<<<< HEAD
--DCATKIN_DEVEL_PREFIX=/home/kevin/autonav_sim/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/kevin/autonav_sim/catkin_ws/install -G Unix Makefiles
-=======
--DCATKIN_DEVEL_PREFIX=/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/akshat/Anveshak/sim/autonav_sim/catkin_ws/install -G Unix Makefiles
->>>>>>> b6c1e11b6156308465211a69bfcc0cfb0f45f8f5
