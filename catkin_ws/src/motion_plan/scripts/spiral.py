@@ -62,12 +62,5 @@ while not rospy.is_shutdown():
 		w=w*0.99	#99% of angular velcocity
 	else:
 		w=w*0.9		#90 % of angular velocity
-	if detected==True:
-		v=0
-		w=0
-		twist_msg.linear.x=v
-		twist_msg.angular.z=w
-		pub.publish(twist_msg)
-		sys.exit()
 		
 
