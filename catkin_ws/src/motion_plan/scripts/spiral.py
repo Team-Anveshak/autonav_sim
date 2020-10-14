@@ -39,12 +39,12 @@ resp = srv_client_set_model_state(model_state)
 rate = rospy.Rate(10)
 pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
 sub_darknet = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, clbk_darknet)
-v=0.5
-w=10
+v=0.8
+w=2
 twist_msg = Twist()
 
 while not rospy.is_shutdown():
-	twist_msg.linear.x=0.5
+	twist_msg.linear.x=v
 	twist_msg.angular.z=w
 	pub.publish(twist_msg)
 	if detected==True:
@@ -54,13 +54,5 @@ while not rospy.is_shutdown():
 		twist_msg.angular.z=w
 		pub.publish(twist_msg)
 		sys.exit()
-	time.sleep(2*pi/w)
-	#subsequent code imposes different conditions on changes in angular velocity to ensure more uniform changes in radius
-	if w<0.8 and w>0.65:
-		w=w*0.95	#95% of angular velocity
-	elif w<=0.65:
-		w=w*0.99	#99% of angular velcocity
-	else:
-		w=w*0.9		#90 % of angular velocity
-		
-
+	time.sleep(pi/(2*w))
+	w=w*0.95
