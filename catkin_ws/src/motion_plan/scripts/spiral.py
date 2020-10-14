@@ -20,11 +20,11 @@ from std_srvs.srv import *
 
 pi=3.14159265
 global detected
-detected=False
+detected=0
 
 def clbk_darknet(msg):
 	global detected
-	detected=True
+	detected=detected+1
 	print("In callback rn")   #If this function is called, object has been detected
 
 rospy.init_node('spiral')
@@ -47,7 +47,14 @@ while not rospy.is_shutdown():
 	twist_msg.linear.x=v
 	twist_msg.angular.z=w
 	pub.publish(twist_msg)
-	if detected==True:
+	if detected==1:
+		v=0
+		w=0.2
+		twist_msg.linear.x=v
+		twist_msg.angular.z=w
+		pub.publish(twist_msg)
+		#sys.exit()
+	if detected==2:
 		v=0
 		w=0
 		twist_msg.linear.x=v
