@@ -26,6 +26,12 @@
       <robotBaseFrame>link_chassis</robotBaseFrame>
     </plugin>
   </gazebo>
+  
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <robotNamespace>/i214</robotNamespace>
+  </plugin>
+</gazebo>
 
  <gazebo reference="sensor_laser">
     <sensor type="ray" name="head_hokuyo_sensor">
