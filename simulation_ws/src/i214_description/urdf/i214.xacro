@@ -63,12 +63,17 @@
     </visual>
   </link>
 
-  <joint name="camera_joint" type="fixed">
-    <axis xyz="0 1 0" />
+  <joint name="camera_joint" type="continuous">
+    <!--<limit upper="1.57" lower="-1.57" velocity="10" effort="1"/>-->
+    <axis xyz="0 0 1" />
     <origin xyz="0 0 0.15" rpy="0 0 0"/>
     <parent link="link_chassis"/>
     <child link="camera_link"/>
+    <limit effort="100" velocity="100"/>
+   <!--<joint_properties damping="0.0" friction="0.0"/>-->
   </joint>
+  
+  
 
   <!-- Camera -->
   <link name="camera_link">
@@ -220,5 +225,19 @@
    <limit effort="100" velocity="100"/>
    <joint_properties damping="0.0" friction="0.0"/>
  </joint>
+ 
+
+ 
+   <!-- transmission -->
+    <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="camera_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
 
 </robot>
