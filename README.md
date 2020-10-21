@@ -36,3 +36,8 @@ sudo apt-get install ros-melodic-effort-controllers : This will install Effort c
 
 sudo apt-get install ros-melodic-position-controllers : This will install position controllers
 
+Sample command in terminal for camera movement:
+
+rostopic pub -1 /i214/camera_joint_position_controller/command std_msgs/Float64 "data: 2.0"
+
+
