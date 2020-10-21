@@ -16,6 +16,7 @@ from tf import transformations
 from gazebo_msgs.msg import ModelState
 from gazebo_msgs.srv import SetModelState
 from geometry_msgs.msg import Twist, Point
+from std_msgs.msg import Float64
 from std_srvs.srv import *
 
 pi=3.14159265
@@ -38,6 +39,7 @@ resp = srv_client_set_model_state(model_state)
 
 rate = rospy.Rate(10)
 pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+pub_cam=rospy.Publisher('/i214/camera_joint_position_controller/command', Float64, queue_size=1)
 sub_darknet = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, clbk_darknet)
 v=0.8
 w=2
@@ -53,6 +55,7 @@ while not rospy.is_shutdown():
 		twist_msg.linear.x=v
 		twist_msg.angular.z=w
 		pub.publish(twist_msg)
+		pub_cam.publish(v)
 		#sys.exit()
 	if detected==2:
 		v=0
