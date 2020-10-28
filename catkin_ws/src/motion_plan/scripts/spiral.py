@@ -22,15 +22,29 @@ from std_srvs.srv import *
 pi=3.14159265
 global detected
 detected=0
+active_ = False
 
 def clbk_darknet(msg):
 	global detected
 	detected=detected+1
 	print("In callback rn")   #If this function is called, object has been detected
 
+def spiral_switch(req):
+    global active_
+    active_ = req.data
+    res = SetBoolResponse()
+    res.success = True
+    res.message = 'Done!'
+    return res
+
 rospy.init_node('spiral')
 rospy.wait_for_service('/gazebo/set_model_state')
 srv_client_set_model_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+
+rospy.wait_for_service('/navigation_switch')
+srv_client_navigation_ = rospy.ServiceProxy('/navigation_switch', SetBool)
+
+srv = rospy.Service('spiral_switch', SetBool, spiral_switch)
 model_state = ModelState()
 model_state.model_name = 'i214'
 model_state.pose.position.x = 0
@@ -46,6 +60,8 @@ w=2
 twist_msg = Twist()
 
 while not rospy.is_shutdown():
+	if not active_:
+		continue
 	twist_msg.linear.x=v
 	twist_msg.angular.z=w
 	pub.publish(twist_msg)
@@ -63,6 +79,8 @@ while not rospy.is_shutdown():
 		twist_msg.linear.x=v
 		twist_msg.angular.z=w
 		pub.publish(twist_msg)
+		resp = srv_client_navigation_(True)
+		#active_ = False
 		sys.exit()
 	time.sleep(pi/(2*w))
 	w=w*0.95
