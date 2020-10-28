@@ -18,6 +18,7 @@ class gpsData:
     longitude = 0.0
 
 count = 0
+srv_client_spiral_ = None
 ax = None
 bars = None
 pub = None
@@ -35,12 +36,12 @@ desired_position_ = gpsData()
 position_data = None
 current_goal = 1
 
-dist_precision_ = 0.00014
+dist_precision_ = 0.001
 
 prev_angle = 0
-a = 3
-b = 0.6
-c = 0.6
+a = 2
+b = 0.7
+c = 0.7
 
 # callbacks
 def clbk_gps(msg):
@@ -83,6 +84,9 @@ def yawFromGps(lat1, long1, lat2, long2):
     brng = (brng + 2*math.pi) % (2*math.pi)
     brng = 2*math.pi - brng
 
+    if brng > math.pi:
+        brng -= 2*math.pi
+
     return brng
 
 def distanceFromGps(lat1,lon1,lat2,lon2):
@@ -108,13 +112,17 @@ def done():
     pub.publish(twist_msg)
 
 def plotter(angles, p_occu_s):
-    global ax, bars
-    ax.cla()
-    bars = ax.bar(angles, p_occu_s)
-    plt.draw()
+    #global ax, bars
+    #ax.cla()
+    #bars = ax.bar(angles, p_occu_s)
+    #plt.draw()
+
+    plt.bar(angles,p_occu_s)
+    plt.show()
+    plt.pause(0.0001)
 
 def set_next_goal():
-    global current_goal, desired_position_, position_data
+    global current_goal, desired_position_, position_data, srv_client_spiral_, active_
 
     #Check if there are any more goals left
     if current_goal < len(position_data) - 1:
@@ -125,7 +133,9 @@ def set_next_goal():
         change_state(0)
     elif current_goal == len(position_data) - 1:
         print 'Final Goal Reached'
-        current_goal += 1  
+        current_goal += 1
+        active_ = False
+        resp = srv_client_spiral_(True)
     else:
         done()
 
@@ -133,7 +143,7 @@ def vfh():
     global count, prev_angle, yaw_, pub, prev_angle, position_, dist_precision_, state_, laser_data
     desired_yaw = yawFromGps(position_.latitude, position_.longitude, desired_position_.latitude, desired_position_.longitude)
     err_pos = distanceFromGps(position_.latitude, position_.longitude, desired_position_.latitude, desired_position_.longitude)
-    desired_err_yaw = -normalize_angle(desired_yaw - yaw_)
+    desired_err_yaw = normalize_angle(desired_yaw - yaw_)
 
     # no of points = 720
     p_occu = 0.5
@@ -141,6 +151,7 @@ def vfh():
     angles = np.arange(-90,90,0.25)
     angles_full = np.arange(-180,180,0.25)
     cost_fun = np.zeros(720)
+    speed = 0.3
 
     if err_pos > dist_precision_ and state_ == 1:
 
@@ -152,34 +163,45 @@ def vfh():
         p_s_occu = ((laser_data.range_max - distances)/laser_data.range_max + (90 - detected_angles)/90) / 2
 
         p_occu_s = (p_occu * p_s_occu) / (p_occu * p_s_occu + p_empty * (1-p_s_occu))
-        p_occu_s = p_occu_s[::-1]
+        #p_occu_s = p_occu_s[::-1]
 
-        max_surr = [p_occu_s[:i] for i in range(20, 40)] + [p_occu_s[i:i+40] for i in range(len(p_occu_s)-20)]
+        max_surr = [p_occu_s[:i] for i in range(10, 20)] + [p_occu_s[i:i+20] for i in range(len(p_occu_s)-10)]
         max_surr = np.array([max(x) for x in max_surr])
+
+        for i in range(len(distances)):
+            if laser_data.ranges[i] < 1.5:
+                max_surr[range(max(i-120, 0), min(i+120, 719))] = 1
+                speed = 0.3
 
         cost_fun[max_surr > 0.2] = 1000
         cost_fun = np.concatenate((np.zeros(360),  cost_fun, np.zeros(360)))
+        if(p_occu_s[0] > 0.2):
+            cost_fun[:360]=500
+        if(p_occu_s[-1] > 0.2):
+            cost_fun[-360:] = 500
         cost_fun += a*np.abs(desired_err_yaw - angles_full*np.pi/180) + b*np.abs(angles_full*np.pi/180) + c*np.abs(angles_full*np.pi/180 - prev_angle)
         
         prev_angle = (np.argmin(cost_fun) - 720) * np.pi / 720
-        print 'Yaw err: [%s], pos err: [%s]' % (desired_yaw, err_pos)
+        print 'Yaw err: [%s], pos err: [%s][%s]' % (desired_yaw, prev_angle, desired_err_yaw)
 
         count += 1
 
         if(count == 80):
-            plotter(angles_full, cost_fun)
+            #plotter(angles_full, cost_fun)
             count = 0
         
         twist_msg = Twist()
-        twist_msg.linear.x = 0.3
+        twist_msg.linear.x = speed
         twist_msg.angular.z = prev_angle
+        #if(np.abs(desired_err_yaw) < np.pi/2 and err_pos < laser_data.ranges[359 - int((desired_err_yaw * 180/np.pi)*4)] * 0.001):
+        #    twist_msg.angular.z = desired_err_yaw
         pub.publish(twist_msg)
     else:
         change_state(2)
         done()
 
 def main():
-    global ax, bars, pub, desired_position_, active_, position_data
+    global ax, bars, pub, desired_position_, active_, position_data, srv_client_spiral_
   
     #read position_data rom file
     position_data = np.genfromtxt("positionData.csv", delimiter=',')
@@ -199,7 +221,13 @@ def main():
 
     sub_imu = rospy.Subscriber('/imu', Imu, clk_yaw)
 
-    rate = rospy.Rate(10)
+
+    rospy.wait_for_service('/spiral_switch')
+
+    srv_client_spiral_ = rospy.ServiceProxy('/spiral_switch', SetBool)
+
+    rate = rospy.Rate(20)
+    rate.sleep()
     rate.sleep()
     while not rospy.is_shutdown():
         if not active_:
