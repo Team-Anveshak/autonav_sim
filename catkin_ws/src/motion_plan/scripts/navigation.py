@@ -12,6 +12,7 @@ import math
 
 # publishers
 pub = None
+active_ = False
 
 #camera properties
 camera_width = 640
@@ -21,8 +22,8 @@ xmid = 0
 laserData = LaserScan()
 
 #PID control paramters (integral term is not added yet)
-P = 2	    # Proportional
-D = 30	    # Derivative
+P = -0.5	    # Proportional
+D = -7.5    # Derivative
 deltaT = 10 # Time interval for derivative calculation
 prev_err_yaw = 0 #previous error for derivative term
  
@@ -39,6 +40,14 @@ def clbk_camera(msg):
     if(len(xmid_arr) != 0):
         xmid = xmid_arr[0]
     print 'xmid: [%s]' % xmid
+
+def navigation_switch(req):
+    global active_
+    active_ = req.data
+    res = SetBoolResponse()
+    res.success = True
+    res.message = 'Done!'
+    return res
 
 def go_straight_ahead():
     global pub, prev_err_yaw, xmid, camera_width, laserData, camera_angle, deltaT, D, P
@@ -71,8 +80,13 @@ def main():
     sub_camera = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, clbk_camera)
     sub_laser = rospy.Subscriber('/i214/laser/scan', LaserScan,  clbk_laser)
 
+
+    srv = rospy.Service('navigation_switch', SetBool, navigation_switch)
+
     rate = rospy.Rate(10)
     while not rospy.is_shutdown():
+        if not active_:
+            continue
         go_straight_ahead()
         rate.sleep()
 
