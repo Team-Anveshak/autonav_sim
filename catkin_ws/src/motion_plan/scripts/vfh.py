@@ -130,7 +130,7 @@ def set_next_goal():
         current_goal += 1
         desired_position_.latitude = position_data[current_goal][0]
         desired_position_.longitude = position_data[current_goal][1]
-        change_state(0)
+        change_state(1)
     elif current_goal == len(position_data) - 1:
         print 'Final Goal Reached'
         current_goal += 1
@@ -151,10 +151,11 @@ def vfh():
     angles = np.arange(-90,90,0.25)
     angles_full = np.arange(-180,180,0.25)
     cost_fun = np.zeros(720)
-    speed = 0.3
+    speed = 0.6
 
     if err_pos > dist_precision_ and state_ == 1:
 
+        #Calculating the probability of an obstacle being present
         distances = np.array(laser_data.ranges)
         detected_angles = np.abs(angles)
         detected_angles[distances == np.inf] = 90
@@ -165,24 +166,31 @@ def vfh():
         p_occu_s = (p_occu * p_s_occu) / (p_occu * p_s_occu + p_empty * (1-p_s_occu))
         #p_occu_s = p_occu_s[::-1]
 
+        #Make the bars in the histogram wider to accomodate the size of rover
         max_surr = [p_occu_s[:i] for i in range(10, 20)] + [p_occu_s[i:i+20] for i in range(len(p_occu_s)-10)]
         max_surr = np.array([max(x) for x in max_surr])
 
+        #Make the bars even more wider and change the speed if the obstacle is very close
         for i in range(len(distances)):
             if laser_data.ranges[i] < 1.5:
                 max_surr[range(max(i-120, 0), min(i+120, 719))] = 1
-                speed = 0.3
+                speed = 0.6
 
-        cost_fun[max_surr > 0.2] = 1000
+        cost_fun[max_surr > 0.2] = 1000     #Ignore the angles where the probability of an obstacle is above the threshold
         cost_fun = np.concatenate((np.zeros(360),  cost_fun, np.zeros(360)))
+
+        #If there is an obstale at an end of the laserscan ignore any angles further away from that end
         if(p_occu_s[0] > 0.2):
             cost_fun[:360]=500
         if(p_occu_s[-1] > 0.2):
             cost_fun[-360:] = 500
+        
+        #Calculate the cost funtion for each angle
         cost_fun += a*np.abs(desired_err_yaw - angles_full*np.pi/180) + b*np.abs(angles_full*np.pi/180) + c*np.abs(angles_full*np.pi/180 - prev_angle)
         
+        #Choose the angle where cost function is minimum
         prev_angle = (np.argmin(cost_fun) - 720) * np.pi / 720
-        print 'Yaw err: [%s], pos err: [%s][%s]' % (desired_yaw, prev_angle, desired_err_yaw)
+        #print 'Yaw err: [%s], pos err: [%s][%s]' % (desired_yaw, prev_angle, desired_err_yaw)
 
         count += 1
 
@@ -193,7 +201,7 @@ def vfh():
         twist_msg = Twist()
         twist_msg.linear.x = speed
         twist_msg.angular.z = prev_angle
-        #if(np.abs(desired_err_yaw) < np.pi/2 and err_pos < laser_data.ranges[359 - int((desired_err_yaw * 180/np.pi)*4)] * 0.001):
+        #if(np.abs(desired_err_yaw) < np.pi/2 and err_pos < laser_data.ranges[359 + int((desired_err_yaw * 180/np.pi)*4)] * 0.001):
         #    twist_msg.angular.z = desired_err_yaw
         pub.publish(twist_msg)
     else:
