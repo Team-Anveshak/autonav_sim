@@ -1,0 +1,10 @@
+i214:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50  
+
+  # Position Controllers ---------------------------------------
+  camera_joint_position_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: camera_joint
